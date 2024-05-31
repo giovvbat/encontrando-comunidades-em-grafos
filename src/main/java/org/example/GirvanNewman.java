@@ -9,8 +9,7 @@ import org.jgrapht.graph.SimpleGraph;
 import java.util.*;
 
 public class GirvanNewman {
-
-    public static List<Set<Integer>> girvanNewman(Graph<Integer, DefaultEdge> graph, int desiredCommunities) {
+    public static List<Set<Integer>> split(Graph<Integer, DefaultEdge> graph, int desiredCommunities) {
         List<Set<Integer>> communities = new ArrayList<>();
         ConnectivityInspector<Integer, DefaultEdge> inspector = new ConnectivityInspector<>(graph);
 
@@ -38,6 +37,4 @@ public class GirvanNewman {
         communities.addAll(inspector.connectedSets());
         return communities;
     }
-
-
 }
