@@ -14,7 +14,7 @@ public class Main {
 
         ReadGraph.read(filePath, graph);
 
-        int desiredCommunities = 4;
+        int desiredCommunities = 3;
         List<Set<Integer>> communities = GirvanNewman.split(graph, desiredCommunities);
 
         System.out.println("Communities found:");
