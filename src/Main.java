@@ -1,4 +1,4 @@
-package org.example;
+package src;
 
 import java.io.File;
 import java.io.FileWriter;
