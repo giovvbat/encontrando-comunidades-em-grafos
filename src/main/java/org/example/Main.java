@@ -18,12 +18,19 @@ public class Main {
 
         ReadGraph.read(filePath, graph);
 
-        int desiredCommunities = 2;
-        List<Set<Integer>> communities = GirvanNewman.split(graph, desiredCommunities);
+        long startTime = System.currentTimeMillis();
+
+        List<Set<Integer>> communities = GirvanNewman.split(graph);
+
+        long endTime = System.currentTimeMillis();
 
         System.out.println("Communities found:");
         for (Set<Integer> community : communities) {
             System.out.println(community);
         }
+
+        System.out.println();
+        System.out.println("Time taken: " + (endTime - startTime) + "ms");
+        System.out.println("Number of communities: " + communities.size());
     }
 }
