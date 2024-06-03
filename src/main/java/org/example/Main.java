@@ -1,9 +1,10 @@
 package org.example;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -11,12 +12,35 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+        if (args.length != 1) {
+            System.err.println("File path is required");
+            return;
+        }
 
-        Scanner scanner = new Scanner(System.in);
-        String filePath = scanner.nextLine();
+        String filePath = args[0];
 
-        ReadGraph.read(filePath, graph);
+        Graph graph = new Graph();
+
+        FileWriter writer;
+
+        try {
+            ReadGraph.read(filePath, graph);
+        } catch(IOException e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+
+        try {
+            new File("results").mkdirs();
+
+            Path path = Paths.get(filePath);
+            writer = new FileWriter("results/result-" + path.getFileName());
+        } catch(IOException e) {
+            System.err.println(e.getMessage());
+            return;
+        }
+
+
 
         long startTime = System.currentTimeMillis();
 
@@ -24,9 +48,21 @@ public class Main {
 
         long endTime = System.currentTimeMillis();
 
-        System.out.println("Communities found:");
-        for (Set<Integer> community : communities) {
-            System.out.println(community);
+        try {
+            System.out.println("Communities found:");
+            writer.write("Communities found:\n");
+            for (Set<Integer> community : communities) {
+                System.out.println(community);
+                writer.write(community.toString() + "\n");
+            }
+
+            writer.write("\nTime taken: " + (endTime - startTime) + "ms\n");
+            writer.write("Number of communities: " + communities.size() + "\n");
+
+            writer.flush();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            return;
         }
 
         System.out.println();
